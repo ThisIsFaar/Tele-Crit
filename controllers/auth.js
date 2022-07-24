@@ -10,6 +10,7 @@ exports.signin = (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(403).json({
       message: errors.array()[0].msg,
+      code: 403,
     });
   }
 
@@ -17,6 +18,7 @@ exports.signin = (req, res) => {
     if (err || !user) {
       return res.status(403).json({
         message: 'Username Does Not Exists',
+        code: 403,
       });
     }
     const checkPassword = await bcrypt.compare(password, user.password);
@@ -28,10 +30,12 @@ exports.signin = (req, res) => {
       return res.status(200).json({
         token,
         user: { _id },
+        code: 200,
       });
     } else {
       return res.status(401).json({
         message: 'Username Password does not match',
+        code: 401,
       });
     }
   });

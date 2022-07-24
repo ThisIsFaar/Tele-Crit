@@ -4,6 +4,8 @@ const PORT = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const cors = require("cors");
+
 mongoose
   .connect('mongodb://localhost:27017/telecrit')
   .then(() => console.log('Database connected'))
@@ -16,6 +18,7 @@ const tvShowRoutes = require('./routes/tvshow');
 
 //Middlewares
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use('/api', authRoutes);
 app.use('/api', tvShowRoutes);
