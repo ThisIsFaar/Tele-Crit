@@ -9,6 +9,8 @@ const cors = require('cors');
 mongoose
   .connect(process.env.DB_AUTH, {
     connectTimeoutMS: 50000,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then(() => {
     app.listen(PORT, () => {
@@ -18,7 +20,6 @@ mongoose
   .catch((error) => {
     console.log('Database connection error', error);
   });
-
 const authRoutes = require('./routes/auth');
 const tvShowRoutes = require('./routes/tvshow');
 
