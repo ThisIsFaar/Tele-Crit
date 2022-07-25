@@ -15,6 +15,13 @@ exports.signin = (req, res) => {
   }
 
   User.findOne({ username }, async (err, user) => {
+    console.log("'''''''''''''''''''''''''''''''''''''''''");
+
+    console.log(err);
+    console.log("''''''''''''''''''''''THEN'''''''''''''''''''");
+    console.log(user);
+    console.log("'''''''''''''''''''''''''''''''''''''''''");
+
     if (err || !user) {
       return res.status(403).json({
         message: 'Username Does Not Exists',
