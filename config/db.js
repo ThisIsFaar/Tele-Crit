@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const connectDB = async () => {
+  const db = process.env.DB_AUTH;
   try {
-    await mongoose.connect(process.env.DB_AUTH, {
+    await mongoose.connect(db, {
       useNewUrlParser: true,
     });
 
