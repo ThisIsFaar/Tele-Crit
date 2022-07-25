@@ -14,7 +14,7 @@ exports.signin = (req, res) => {
     });
   }
 
-  User.findOne({ username }, async (err, user) => {
+  User.findOne({ username }, (err, user) => {
     console.log("'''''''''''''''''''''''''''''''''''''''''");
     console.log(err);
     console.log("''''''''''''''''''''''THEN'''''''''''''''''''");
@@ -27,7 +27,7 @@ exports.signin = (req, res) => {
         code: 403,
       });
     }
-    const checkPassword = await bcrypt.compare(password, user.password);
+    const checkPassword = bcrypt.compare(password, user.password);
 
     if (checkPassword) {
       const { _id } = user;
