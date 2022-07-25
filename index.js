@@ -10,7 +10,11 @@ mongoose
   .connect(process.env.DB_AUTH, {
     connectTimeoutMS: 50000,
   })
-  .then(() => console.log('Database connected'))
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`APP is listening at PORT ${PORT}`);
+    });
+  })
   .catch((error) => {
     console.log('Database connection error', error);
   });
@@ -30,8 +34,4 @@ app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     res.status(401).send('invalid token...');
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`APP is listening at PORT ${PORT}`);
 });
