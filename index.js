@@ -8,9 +8,9 @@ const cors = require('cors');
 
 mongoose
   .connect(process.env.DB_AUTH, {
-    connectTimeoutMS: 50000,
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   })
   .then(() => {
     app.listen(PORT, () => {
