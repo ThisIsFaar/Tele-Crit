@@ -6,17 +6,20 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
 
-mongoose
-  .connect(process.env.DB_AUTH, {
-    useNewUrlParser: true,
-  })
-  .then(() => console.log('Database connected'))
-  .catch((error) => {
-    console.log('Database connection error', error);
-  });
+// mongoose
+//   .connect(process.env.DB_AUTH, {
+//     useNewUrlParser: true,
+//   })
+//   .then(() => console.log('Database connected'))
+//   .catch((error) => {
+//     console.log('Database connection error', error);
+//   });
 
 const authRoutes = require('./routes/auth');
 const tvShowRoutes = require('./routes/tvshow');
+const connectDB = require('./config/db');
+
+connectDB();
 
 //Middlewares
 app.use(bodyParser.json());
