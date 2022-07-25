@@ -7,7 +7,9 @@ require('dotenv').config();
 const cors = require('cors');
 
 mongoose
-  .connect(process.env.DB_AUTH)
+  .connect(process.env.DB_AUTH, {
+    connectTimeoutMS: 50000,
+  })
   .then(() => console.log('Database connected'))
   .catch((error) => {
     console.log('Database connection error', error);
