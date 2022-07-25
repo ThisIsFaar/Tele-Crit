@@ -6,8 +6,6 @@ const bcrypt = require('bcrypt');
 exports.signin = (req, res) => {
   const errors = validationResult(req);
   const { username, password } = req.body;
-  console.log('USER:');
-  console.log(errors);
 
   if (!errors.isEmpty()) {
     return res.status(403).json({
@@ -21,6 +19,8 @@ exports.signin = (req, res) => {
       return res.status(403).json({
         message: 'Username Does Not Exists',
         code: 403,
+        err: err,
+        user: user,
       });
     }
     const checkPassword = await bcrypt.compare(password, user.password);
