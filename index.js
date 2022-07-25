@@ -7,7 +7,10 @@ require('dotenv').config();
 const cors = require('cors');
 
 mongoose
-  .connect(process.env.DB_AUTH)
+  .connect(process.env.DB_AUTH, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log('Database connected'))
   .catch((error) => {
     console.log('Database connection error', error);
