@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const config = require('config');
-// const db = config.get('mongoURI');
-require('dotenv').config();
+const db = config.get('mongoURI');
 
 const connectDB = async () => {
-  //   console.log(process.env.DB_AUTH);
   try {
-    await mongoose.connect(process.env.DB_AUTH, {
+    await mongoose.connect(db, {
       useNewUrlParser: true,
     });
 
