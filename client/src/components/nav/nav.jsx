@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { isAuthenticated, Signout } from '../../helper/auth';
+import { isAuthenticated, Signout } from '../../helper/authApi';
 import { useNavigate } from 'react-router-dom';
 
 export default function Nav() {

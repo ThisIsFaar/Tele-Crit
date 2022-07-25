@@ -1,9 +1,7 @@
-import { signin, authenticate, isAuthenticated } from '../../helper/auth';
+import { signin, authenticate, isAuthenticated } from '../../helper/authApi';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
-// const queryString = require('query-string');
 const Joi = require('joi');
 
 export default function Signin() {

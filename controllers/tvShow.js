@@ -11,6 +11,7 @@ exports.createShow = (req, res) => {
     //HTTP Code 406: Method Not Allowed
     return res.status(406).json({
       message: errors.array()[0].msg,
+      code: 406,
     });
   }
   TvShow.create(
@@ -25,11 +26,13 @@ exports.createShow = (req, res) => {
       if (err) {
         return res.status(406).json({
           message: 'Something went wrong',
+          code: 406,
         });
       }
       res.send({
         user: req.auth._id,
         body: req.body,
+        code: 200,
       });
     }
   );
@@ -57,6 +60,7 @@ exports.updateShow = async (req, res) => {
     //HTTP Code 406: Method Not Allowed
     return res.status(406).json({
       message: errors.array()[0].msg,
+      code: 406,
     });
   }
 
@@ -67,10 +71,12 @@ exports.updateShow = async (req, res) => {
       if (err) {
         return res.status(406).json({
           message: 'Something went wrong',
+          code: 406,
         });
       }
       res.status(200).send({
         updated,
+        code: 200,
       });
     }
   );
@@ -78,16 +84,18 @@ exports.updateShow = async (req, res) => {
 
 exports.deleteShow = async (req, res) => {
   const user = req.user;
-  const { showId } = req.body;
+  const { _id } = req.body;
 
-  TvShow.findByIdAndRemove({ _id: showId }, (err, deleted) => {
+  TvShow.findByIdAndRemove({ _id: _id }, (err, deleted) => {
     if (err) {
       return res.status(406).json({
         message: 'Something went wrong',
+        code: 406,
       });
     }
     res.status(200).send({
       deleted,
+      code: 200,
     });
   });
 };
