@@ -6,20 +6,18 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
 
-mongoose
-  .connect(process.env.DB_AUTH, {
+mongoose.connect(
+  process.env.DB_AUTH,
+  {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then(() => {
+  },
+  () => {
     app.listen(PORT, () => {
       console.log(`APP is listening at PORT ${PORT}`);
     });
-  })
-  .catch((error) => {
-    console.log('Database connection error', error);
-  });
+  }
+);
 const authRoutes = require('./routes/auth');
 const tvShowRoutes = require('./routes/tvshow');
 
