@@ -21,7 +21,6 @@ export default function UpdateModal({ showData: sd, closeModal, reloadShows }) {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    console.log(values);
   };
   const schema = Joi.object({
     rating: Joi.number(),
@@ -36,7 +35,6 @@ export default function UpdateModal({ showData: sd, closeModal, reloadShows }) {
     } else {
       updateShow({ user, token, values })
         .then((data) => {
-          console.log(data);
           if (data.code === 200) {
             reloadShows();
             closeModal(false);

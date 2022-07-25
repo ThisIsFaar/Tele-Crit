@@ -18,7 +18,6 @@ export default function Signin() {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    console.log(values);
   };
   const schema = Joi.object({
     username: Joi.string().required(),
@@ -32,7 +31,6 @@ export default function Signin() {
     if (error) {
       errorToast(error.message);
     } else {
-      console.log(username + ' ' + password);
       signin({ username, password })
         .then((data) => {
           console.log(data);

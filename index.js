@@ -26,7 +26,6 @@ app.use('/api', tvShowRoutes);
 //error handling for express-jwt authentication
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
-    console.log('We Are Here');
     res.status(401).send('invalid token...');
   }
 });

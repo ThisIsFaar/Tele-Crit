@@ -62,7 +62,6 @@ export const deleteShow = ({ user, token, data }) => {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      console.log(response);
       return response.json();
     })
     .catch((err) => console.log(err));
