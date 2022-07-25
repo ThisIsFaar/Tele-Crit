@@ -9,13 +9,16 @@ export default function Main() {
   const { user, token } = isAuthenticated();
   const [shows, setShows] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   //loading product from server
   const loadAllShows = () => {
+    setSpinner(true);
     getShows(user._id, token).then((data) => {
       if (data.error) {
       } else {
         setShows(data.shows);
+        setSpinner(false);
       }
     });
   };
@@ -35,7 +38,7 @@ export default function Main() {
 
   return (
     <section className="text-gray-600 body-font">
-      <div className="container px-5 py-14 mx-auto">
+      <div className="container px-5 py-14 mx-auto  h-full">
         <button
           className="mb-5 block text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center color-white"
           type="button"
@@ -56,13 +59,20 @@ export default function Main() {
         {modalShow && (
           <CreateModal closeModal={toggleModal} reloadShows={loadAllShows} />
         )}
-        <div className="flex flex-wrap -m-4 justify-center">
-          {shows.length > 0 ? (
+        <div className="flex flex-wrap -m-4 justify-center  ">
+          {shows.length > 0 && spinner === false ? (
             shows.map((show) => {
               return (
                 <Card key={show._id} data={show} reloadShows={loadAllShows} />
               );
             })
+          ) : !spinner ? (
+            <span
+              className="flex justify-center items-center "
+              style={{ height: '75vh' }}
+            >
+              You have not added any tvshows yet, Add One!
+            </span>
           ) : (
             <Spinner />
           )}

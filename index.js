@@ -4,10 +4,10 @@ const PORT = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const cors = require("cors");
+const cors = require('cors');
 
 mongoose
-  .connect('mongodb://localhost:27017/telecrit')
+  .connect(process.env.DB_AUTH)
   .then(() => console.log('Database connected'))
   .catch((error) => {
     console.log('Database connection error', error);
@@ -22,6 +22,14 @@ app.use(cors());
 
 app.use('/api', authRoutes);
 app.use('/api', tvShowRoutes);
+
+//error handling for express-jwt authentication
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    console.log('We Are Here');
+    res.status(401).send('invalid token...');
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`APP is listening at PORT ${PORT}`);

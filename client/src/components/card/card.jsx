@@ -81,7 +81,9 @@ export default function Card({ data, reloadShows }) {
         <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">
           {title}
         </h1>
-        <p className="leading-relaxed mb-3">{review}</p>
+        <p className="leading-relaxed mb-3 max-h-60 h-60 overflow-auto">
+          {review}
+        </p>
         <p className="text-indigo-500 inline-flex items-center font-bold">
           <span className="text-gray-400 font-normal">Platform : &nbsp;</span>
           {streamingApp}
