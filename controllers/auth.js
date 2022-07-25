@@ -14,9 +14,8 @@ exports.signin = (req, res) => {
     });
   }
 
-  User.find({ username }, async (err, user) => {
+  User.findOne({ username }, async (err, user) => {
     console.log("'''''''''''''''''''''''''''''''''''''''''");
-
     console.log(err);
     console.log("''''''''''''''''''''''THEN'''''''''''''''''''");
     console.log(user);
