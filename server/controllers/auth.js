@@ -15,15 +15,6 @@ exports.signin = async (req, res) => {
   }
 
   const user = await User.findOne({ username });
-  console.log('::::::::::::::::user:::::::', user);
-  // if (err || !user) {
-  //   return res.status(403).json({
-  //     message: 'Username Does Not Exists',
-  //     code: 403,
-  //     err: err,
-  //     user: user,
-  //   });
-  // }
   const checkPassword = await bcrypt.compare(password, user.password);
 
   if (checkPassword) {

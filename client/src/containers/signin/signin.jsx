@@ -33,7 +33,6 @@ export default function Signin() {
     } else {
       signin({ username, password })
         .then((data) => {
-          console.log(data);
           if (data.code === 200) {
             authenticate(data, () => {
               setValues({
