@@ -18,19 +18,10 @@ export default function Card({ data, reloadShows }) {
     }
   };
   const { user, token } = isAuthenticated();
-  // const toggleDeleteModal = () => {
-  //   console.log('click');
-  //   if (deleteModalShow) {
-  //     setDeleteModalShow(false);
-  //   } else {
-  //     setDeleteModalShow(true);
-  //   }
-  // };
   const onDelete = (event) => {
     event.preventDefault();
     deleteShow({ user, token, data })
       .then((data) => {
-        console.log(data);
         if (data.code === 200) {
           reloadShows();
           toast.success('Yippe! Show Successfully Removed.', {

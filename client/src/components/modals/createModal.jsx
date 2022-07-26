@@ -20,7 +20,6 @@ export default function CreateModal({ closeModal, reloadShows }) {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    console.log(values);
   };
   const schema = Joi.object({
     rating: Joi.number(),
@@ -35,7 +34,6 @@ export default function CreateModal({ closeModal, reloadShows }) {
     } else {
       createShow({ user, token, values })
         .then((data) => {
-          console.log(data);
           if (data.code === 200) {
             reloadShows();
             closeModal(false);

@@ -14,7 +14,6 @@ export const signin = (user) => {
     .catch((err) => console.log(err));
 };
 export const authenticate = (data, next) => {
-  console.log('aya');
   if (typeof window !== 'undefined') {
     localStorage.setItem('jwt', JSON.stringify(data));
     next();
