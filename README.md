@@ -1,9 +1,9 @@
-
 # Tele-Crit
 
 manage a list of the TV shows/Movies watched
 DEMO LINK: https://tele-crit.netlify.app/
 [![S7Ai0P.md.png](https://iili.io/S7Ai0P.md.png)](https://freeimage.host/i/S7Ai0P)
+
 ## Screenshots
 
 [![S5RpJn.md.png](https://iili.io/S5RpJn.md.png)](https://freeimage.host/i/S5RpJn)
@@ -17,6 +17,7 @@ DEMO LINK: https://tele-crit.netlify.app/
 <summary>Manually install with NPM and all...</summary>
 
 First, clone the repo and go to root of repo
+
 ```bash
 git clone https://github.com/ThisIsFaar/TeleCrit.git
 cd TeleCrit
@@ -25,16 +26,19 @@ cd TeleCrit
 First complete the server mandatory steps
 
 1. move to server folder and install server dependancy
+
 ```bash
 cd server
 npm install
 ```
+
 2. create a file with name ".env"
 3. In .env file add required env variables
-1. MONGODB_URI=<your_mongodb_atlas_db_uri>
-2. SECRET=<'a_secret_string'>
-3. PORT=<a_free_port_for_server>
-4. start the server
+4. MONGODB_URI=<your_mongodb_atlas_db_uri>
+5. SECRET=<'a_secret_string'>
+6. PORT=<a_free_port_for_server>
+7. start the server
+
 ```
 npm start
 ```
@@ -42,14 +46,17 @@ npm start
 Complete the Client mandatory steps
 
 1. move to client folder(from the root of repo) and install server dependancy
+
 ```bash
 cd client
 npm install
 ```
+
 2. create a file with name ".env"
 3. In .env file add required env variable
-1. REACT_APP_API_URL=<http://localhost:<your_server_port>/api>
-4. start the server
+4. REACT_APP_API_URL=<http://localhost:<your_server_port>/api>
+5. start the server
+
 ```
 npm start
 ```
@@ -59,11 +66,11 @@ Client will be started on 3000 port by default, access directly on your browser 
 ```
 localhost:3000
 ```
+
 </details>
 
 <details>
 <summary>With Docker images...</summary>
-
 
 Clone repo and add env variables from 1st procedure
 
@@ -75,27 +82,27 @@ then simply run commands in terminal from root of project
 ```
 
 Done, open app in your broswer with url:
+
 ```
     localhost:3000
 ```
 
 </details>
 
-           
-           
 ### Checklist of Assignment Task (All Completed)
 
 - [x] Users can add a new title to the list with the following information
-     - Title - Name of the show
-     - Streaming App : Streaming Platform where the user has watched the show (example - Netflix)
-     - Rating : Users should be able to **star rate** the show.
-     - Review : Users should be able to add a review of that show
+  - Title - Name of the show
+  - Streaming App : Streaming Platform where the user has watched the show (example - Netflix)
+  - Rating : Users should be able to **star rate** the show.
+  - Review : Users should be able to add a review of that show
 - [x] Users should be able to add or delete a show from the list.
 - [x] Users can update any of the TV series related data ( eg: streaming app, rating, review)
 - [x] APIs should validate a JWT token before allowing access to the caller.
 - [x] Prettier and Linter configuration
 - [x] Dockerise the application
 - [x] Readme file on how to deploy and run the service.
-           
-           
-           
+
+## Authors
+
+- [@ThisIsfaar](https://www.github.com/thisisfaar)
