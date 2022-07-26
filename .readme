@@ -1,0 +1,52 @@
+## How to Deploy and run the service
+
+first, clone the repo and go to root of repo
+
+```bash
+  git clone https://github.com/ThisIsFaar/TeleCrit.git
+  cd TeleCrit
+```
+
+First complete the server mandatory steps
+
+1. move to server folder and install server dependancy
+
+```bash
+    cd server
+    npm install
+```
+
+2. create a file with name ".env"
+3. In .env file add required env variables
+   1. MONGODB_URI=<your_mongodb_atlas_db_uri>
+   2. SECRET=<'a_secret_string'>
+   3. PORT=<a_free_port_for_server>
+4. start the server
+
+```
+    npm start
+```
+
+Complete the Client mandatory steps
+
+1. move to client folder(from the root of repo) and install server dependancy
+
+```bash
+    cd client
+    npm install
+```
+
+2. create a file with name ".env"
+3. In .env file add required env variable
+   1. REACT_APP_API_URL=<http://localhost:<your_server_port>/api>
+4. start the server
+
+```
+    npm start
+```
+
+Client will be started on 3000 port by default, access directly on your browser with
+
+```
+    localhost:3000
+```
