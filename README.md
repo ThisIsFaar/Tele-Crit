@@ -89,7 +89,7 @@ Done, open app in your broswer with url:
 
 </details>
 
-### Checklist of Assignment Task (All Completed)
+### Features Checklist
 
 - [x] Users can add a new title to the list with the following information
   - Title - Name of the show
