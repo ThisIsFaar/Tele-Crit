@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
@@ -25,6 +24,10 @@ app.use((err, req, res, next) => {
     res.status(401).send('invalid token...');
   }
 });
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
 app.listen(PORT, () => {
   console.log(`APP is listening at PORT ${PORT}`);

@@ -15,17 +15,20 @@ exports.signin = async (req, res) => {
   }
 
   const user = await User.findOne({ username });
-  const checkPassword = await bcrypt.compare(password, user.password);
 
-  if (checkPassword) {
-    const { _id } = user;
-    const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+  if (user) {
+    const checkPassword = await bcrypt.compare(password, user.password);
 
-    return res.status(200).json({
-      token,
-      user: { _id },
-      code: 200,
-    });
+    if (checkPassword) {
+      const { _id } = user;
+      const token = jwt.sign({ _id: user._id }, process.env.SECRET);
+
+      return res.status(200).json({
+        token,
+        user: { _id },
+        code: 200,
+      });
+    }
   } else {
     return res.status(401).json({
       message: 'Username Password does not match',
