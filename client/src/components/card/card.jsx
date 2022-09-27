@@ -5,7 +5,7 @@ import { appUpdateModalToggle, appUpdateShow } from '../../store/app';
 
 export default function Card({ data, feed }) {
   const dispatch = useDispatch();
-  const { _id, userId, title, rating, review, streamingApp } = data;
+  const { _id, userId, title, rating, review, streamingApp, byUsername } = data;
 
   const { user, token } = isAuthenticated();
   const onDelete = (event) => {
@@ -34,10 +34,12 @@ export default function Card({ data, feed }) {
         <p className="leading-relaxed mb-3 max-h-60 h-60 overflow-auto">
           {review}
         </p>
+
         <p className="text-indigo-500 inline-flex items-center font-bold">
           <span className="text-gray-400 font-normal">Platform : &nbsp;</span>
           {streamingApp}
         </p>
+
         <div className="text-center mt-2 leading-none flex justify-center bottom-0 left-0 w-full py-4">
           <span className="text-gray-400 mr-3 inline-flex items-center leading-none pr-3 py-1  border-gray-200">
             <svg
@@ -57,6 +59,9 @@ export default function Card({ data, feed }) {
             <span className="font-bold text-black">{rating}</span>/10 Rating
           </span>
         </div>
+        <span class="bg-blue-100 p-8 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+          @{byUsername}
+        </span>
 
         {feed === 'false' && (
           <div className="text-center mt-2 leading-none flex justify-center  bottom-0 left-0 w-full py-4">

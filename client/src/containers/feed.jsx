@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Card from '../components/card/card';
 import Spinner from '../components/spinner/spinners';
 import { isAuthenticated } from '../helper/authApi';
-import { fetchShows } from '../store/show';
+import { fetchAllShows, fetchShows } from '../store/show';
 const Feed = () => {
   const dispatch = useDispatch();
   const { user, token } = isAuthenticated();
@@ -15,7 +15,9 @@ const Feed = () => {
     Authorization: `Bearer ${token}`,
   };
   useEffect(() => {
-    dispatch(fetchShows({ url: `/tvshow/read/${user._id}`, headers: head }));
+    dispatch(
+      fetchAllShows({ url: `/tvshow/readAll/${user._id}`, headers: head })
+    );
   }, []);
 
   const data = useSelector((store) => store.entities.show.list);

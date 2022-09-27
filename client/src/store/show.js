@@ -69,10 +69,23 @@ export const fetchShows = (param) => (dispatch, getState) => {
   );
 };
 
+//Fetchn All Action Creator
+export const fetchAllShows = (param) => (dispatch, getState) => {
+  const { url, headers } = param;
+  dispatch(
+    apiCallBegan({
+      url,
+      headers,
+      onStart: showsRequested.type,
+      onSuccess: showsReceived.type,
+      onError: showsRequestFailed.type,
+    })
+  );
+};
+
 //Create Action Creator
 export const createShows = (param) => (dispatch, getState) => {
   const { url, headers, data } = param;
-  console.log(param);
   dispatch(
     apiCallBegan({
       url,

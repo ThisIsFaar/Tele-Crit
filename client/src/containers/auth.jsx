@@ -1,75 +1,43 @@
-import { signin, authenticate, isAuthenticated } from '../helper/authApi';
-import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
-const Joi = require('joi');
+import AuthSignin from './authSignin';
+import AuthSignup from './authSignup';
 
 export default function Auth() {
-  let navigate = useNavigate();
-
-  const [values, setValues] = useState({
-    username: '',
-    password: '',
-    error: '',
-    didRedirect: false,
-  });
-
-  if (isAuthenticated()) {
-    return navigate('/feed');
-  }
-
-  const { username, password } = values;
-
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
-  };
-  const schema = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
-  });
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-
-    const { error } = schema.validate({ username, password });
-    if (error) {
-      errorToast(error.message);
-    } else {
-      signin({ username, password })
-        .then((data) => {
-          if (data.code === 200) {
-            authenticate(data, () => {
-              setValues({
-                ...values,
-                didRedirect: true,
-              });
-            });
-          } else if (data.code === 403 || 401) {
-            errorToast(data.message);
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  // const performRedirect = () => {
-
-  // };
-  // performRedirect();
-  const errorToast = (message) => {
-    toast.error(`${message}`, {
-      position: 'top-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+  const [authForm, setauthForm] = useState('signin');
+  const formToggler = (val) => {
+    setauthForm(val);
   };
   return (
     <section className="h-full gradient-form md:h-screen flex items-center justify-center">
       <div className="md:p-12 md:mx-6 w-2/5">
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            marginBottom: '3rem',
+          }}
+        >
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800"
+            onClick={() => {
+              formToggler('signin');
+            }}
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+              SignIn Form
+            </span>
+          </button>
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800"
+            onClick={() => {
+              formToggler('signup');
+            }}
+          >
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+              SignUp Form
+            </span>
+          </button>
+        </div>
         <div className="flex justify-center flex-col content-center items-center ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -85,38 +53,11 @@ export default function Auth() {
             We are Telecast-Critics
           </h4>
         </div>
-        <form>
-          <p className="mb-4 text-center">Signin to your account</p>
-          <div className="mb-4">
-            <input
-              onChange={handleChange('username')}
-              value={username}
-              type="text"
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              id="exampleFormControlInput1"
-              placeholder="Username"
-            />
-          </div>
-          <div className="mb-4">
-            <input
-              onChange={handleChange('password')}
-              value={password}
-              type="password"
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              id="exampleFormControlInput1"
-              placeholder="Password"
-            />
-          </div>
-          <div className="text-center pt-1 mb-12 pb-1">
-            <button
-              onClick={onSubmit}
-              type="button"
-              className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br  font-medium rounded-lg text-sm py-2.5 text-center w-2/4"
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
+        {authForm === 'signin' ? (
+          <AuthSignin />
+        ) : (
+          <AuthSignup toggler={formToggler} />
+        )}
       </div>
     </section>
   );

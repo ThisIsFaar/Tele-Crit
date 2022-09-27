@@ -4,6 +4,7 @@ const {
   readShows,
   updateShow,
   deleteShow,
+  readAllShows,
 } = require('../controllers/tvShow');
 const router = express.Router();
 const {
@@ -32,6 +33,8 @@ router.post(
 );
 
 router.get('/tvshow/read/:userId', isSignin, isAuthenticated, readShows);
+
+router.get('/tvshow/readAll/:userId', isSignin, isAuthenticated, readAllShows);
 
 router.put(
   '/tvshow/update/:userId',

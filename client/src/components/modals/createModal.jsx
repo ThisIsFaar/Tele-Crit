@@ -10,13 +10,14 @@ const Joi = require('joi');
 export default function CreateModal() {
   const dispatch = useDispatch();
   const { user, token } = isAuthenticated();
-
+  console.log(user);
   const [values, setValues] = useState({
     title: '',
     rating: '',
     review: '',
     streamingApp: '',
     publishMode: '',
+    byUsername: user.username,
   });
   const { title, rating, review, streamingApp, publishMode } = values;
 
@@ -34,7 +35,6 @@ export default function CreateModal() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(values.title);
     const { error } = schema.validate({
       title,
       review,

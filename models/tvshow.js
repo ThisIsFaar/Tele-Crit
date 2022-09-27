@@ -9,6 +9,7 @@ const tvShowSchema = new Schema({
   rating: Number,
   publishMode: String,
   review: String,
+  byUsername: String,
 });
 
 module.exports = mongoose.model('tvShow', tvShowSchema);

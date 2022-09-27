@@ -20,12 +20,13 @@ exports.signin = async (req, res) => {
     const checkPassword = await bcrypt.compare(password, user.password);
 
     if (checkPassword) {
-      const { _id } = user;
+      const { _id, username } = user;
       const token = jwt.sign({ _id: user._id }, process.env.SECRET);
 
       return res.status(200).json({
         token,
-        user: { _id },
+        user: { _id, username },
+
         code: 200,
       });
     }
@@ -55,12 +56,11 @@ exports.signup = async (req, res) => {
 
   // now we set user password to hashed password
   user.password = await bcrypt.hash(user.password, salt);
-
   user.save((err, user) => {
     if (err) {
       return res.status(400).json({
         message: 'Something went wrong',
-        status: 400,
+        code: 400,
         det: err.message,
       });
     }
@@ -68,7 +68,7 @@ exports.signup = async (req, res) => {
     res.json({
       username: user.username,
       encry_password: user.password,
-      status: 200,
+      code: 200,
       message: 'Successfully created account, Signin and Chill!',
     });
   });

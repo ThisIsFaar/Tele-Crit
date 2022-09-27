@@ -5,7 +5,8 @@ const { mongoose } = require('mongoose');
 
 exports.createShow = (req, res) => {
   const errors = validationResult(req);
-  const { title, streamingApp, rating, review, publishMode } = req.body;
+  const { title, streamingApp, rating, review, publishMode, byUsername } =
+    req.body;
 
   if (!errors.isEmpty()) {
     //HTTP Code 406: Method Not Allowed
@@ -21,6 +22,7 @@ exports.createShow = (req, res) => {
     rating,
     review,
     publishMode,
+    byUsername,
   };
   TvShow.create(obj, (err, show) => {
     if (err) {
@@ -37,9 +39,37 @@ exports.createShow = (req, res) => {
       rating: show.rating,
       review: show.review,
       publishMode: show.publishMode,
+      byUsername: show.byUsername,
     };
     res.send({
       data: data,
+      code: 200,
+    });
+  });
+};
+
+exports.readAllShows = (req, res) => {
+  const user = req.user;
+  TvShow.find((err, shows) => {
+    if (err) {
+      return res.status(406).json({
+        message: 'Something went wrong',
+      });
+    }
+    const data = shows.map((show) => {
+      return {
+        id: show._id.toString(),
+        userId: show.userId,
+        title: show.title,
+        streamingApp: show.streamingApp,
+        rating: show.rating,
+        review: show.review,
+        publishMode: show.publishMode,
+        byUsername: show.byUsername,
+      };
+    });
+    res.send({
+      data,
       code: 200,
     });
   });
@@ -62,6 +92,7 @@ exports.readShows = (req, res) => {
         rating: show.rating,
         review: show.review,
         publishMode: show.publishMode,
+        byUsername: show.byUsername,
       };
     });
     res.send({
@@ -101,6 +132,7 @@ exports.updateShow = async (req, res) => {
         rating,
         review,
         publishMode,
+        byUsername,
       };
       res.status(200).send({
         result,
