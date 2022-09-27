@@ -1,73 +1,32 @@
-import UpdateModal from '../modals/updateModal';
-import { useState } from 'react';
-import DeleteModal from '../modals/deleteModal';
-import { toast } from 'react-toastify';
-import { deleteShow } from '../../helper/showApi';
 import { isAuthenticated } from '../../helper/authApi';
+import { useDispatch } from 'react-redux';
+import { deleteShows } from '../../store/show';
+import { appUpdateModalToggle, appUpdateShow } from '../../store/app';
 
-export default function Card({ data, reloadShows }) {
+export default function Card({ data, feed }) {
+  const dispatch = useDispatch();
   const { _id, userId, title, rating, review, streamingApp } = data;
-  const [updateModalShow, setUpdateModalShow] = useState(false);
-  const [deleteModalShow, setDeleteModalShow] = useState(false);
 
-  const toggleModal = () => {
-    if (updateModalShow) {
-      setUpdateModalShow(false);
-    } else {
-      setUpdateModalShow(true);
-    }
-  };
   const { user, token } = isAuthenticated();
   const onDelete = (event) => {
     event.preventDefault();
-    deleteShow({ user, token, data })
-      .then((data) => {
-        if (data.code === 200) {
-          reloadShows();
-          toast.success('Yippe! Show Successfully Removed.', {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        } else if (data.code === 406) {
-          errorToast(data.message);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
 
-  const errorToast = (message) => {
-    toast.error(`${message}`, {
-      position: 'top-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    const headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+    dispatch(
+      deleteShows({
+        url: `/tvshow/delete/${user._id}`,
+        headers,
+        data: JSON.stringify(data),
+      })
+    );
   };
 
   return (
     <div className="p-4 lg:w-1/3 ">
-      {updateModalShow && (
-        <UpdateModal
-          showData={data}
-          closeModal={toggleModal}
-          reloadShows={reloadShows}
-        />
-      )}
-      {/* {deleteModalShow && (
-        <DeleteModal
-          showData={data}
-          closeModal={toggleDeleteModal}
-          reloadShows={reloadShows}
-        />
-      )} */}
       <div className="h-full bg-gray-100 bg-opacity-75 px-8 pt-8 rounded-lg overflow-hidden text-center relative shadow hover:shadow-2xl transition ease-out duration-300 hover:cursor-pointer">
         <h1 className="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">
           {title}
@@ -99,22 +58,27 @@ export default function Card({ data, reloadShows }) {
           </span>
         </div>
 
-        <div className="text-center mt-2 leading-none flex justify-center  bottom-0 left-0 w-full py-4">
-          <button
-            onClick={setUpdateModalShow}
-            type="button"
-            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-          >
-            Update
-          </button>
-          <button
-            onClick={onDelete}
-            type="button"
-            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-          >
-            Delete
-          </button>
-        </div>
+        {feed === 'false' && (
+          <div className="text-center mt-2 leading-none flex justify-center  bottom-0 left-0 w-full py-4">
+            <button
+              onClick={() => {
+                dispatch({ type: appUpdateShow.type, payload: data });
+                dispatch({ type: appUpdateModalToggle.type });
+              }}
+              type="button"
+              className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            >
+              Update
+            </button>
+            <button
+              onClick={onDelete}
+              type="button"
+              className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -4,38 +4,31 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Main from './containers/main/main';
-import Signin from './containers/signin/signin';
+import Main from './containers/main';
+import Auth from './containers/auth';
 import Protected from './Routes/protectedRoutes';
+import { Provider } from 'react-redux';
+import configureStore from './store/index';
+import NotFound from './containers/NotFound';
+import Feed from './containers/feed';
+const store = configureStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
-          <Route path="" element={<Signin />} />
-          <Route path="home" element={<Protected Component={Main} />} />
-          <Route
-            path="*"
-            element={
-              <main style={{ padding: '1rem' }}>
-                <p
-                  style={{
-                    textAlign: 'center',
-                    fontSize: '2rem',
-                    lineHeight: '70vh',
-                  }}
-                >
-                  hmmm... You look Lost, There's nothing here!
-                </p>
-              </main>
-            }
-          />
+        <Route path="" element={<App />}>
+          <Route path="" element={<Auth />} />
+          <Route path="owns" element={<Protected Component={Main} />} />
+          <Route path="feed" element={<Protected Component={Feed} />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </Provider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

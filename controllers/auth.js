@@ -36,3 +36,40 @@ exports.signin = async (req, res) => {
     });
   }
 };
+
+exports.signup = async (req, res) => {
+  const errors = validationResult(req);
+  const { username, password } = req.body;
+  if (!errors.isEmpty()) {
+    return res.status(403).json({
+      message: errors.array()[0].msg,
+      code: 403,
+    });
+  }
+
+  // creating a new mongoose doc from user data
+  const user = new User({ username, password });
+
+  // generate salt to hash password
+  const salt = await bcrypt.genSalt(10);
+
+  // now we set user password to hashed password
+  user.password = await bcrypt.hash(user.password, salt);
+
+  user.save((err, user) => {
+    if (err) {
+      return res.status(400).json({
+        message: 'Something went wrong',
+        status: 400,
+        det: err.message,
+      });
+    }
+
+    res.json({
+      username: user.username,
+      encry_password: user.password,
+      status: 200,
+      message: 'Successfully created account, Signin and Chill!',
+    });
+  });
+};

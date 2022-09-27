@@ -19,11 +19,11 @@ app.use('/api', authRoutes);
 app.use('/api', tvShowRoutes);
 
 //error handling for express-jwt authentication
-app.use((err, req, res, next) => {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).send('invalid token...');
-  }
-});
+// app.use((err, req, res, next) => {
+//   if (err.name === 'UnauthorizedError') {
+//     res.status(401).send('invalid token...');
+//   }
+// });
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

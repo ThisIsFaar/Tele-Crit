@@ -3,10 +3,12 @@ import { isAuthenticated } from '../../helper/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { createShows } from '../../store/show';
+import { useDispatch } from 'react-redux';
+import { appCreateModalToggle } from '../../store/app';
 const Joi = require('joi');
-
-export default function CreateModal({ closeModal, reloadShows }) {
-  let navigate = useNavigate();
+export default function CreateModal() {
+  const dispatch = useDispatch();
   const { user, token } = isAuthenticated();
 
   const [values, setValues] = useState({
@@ -14,43 +16,48 @@ export default function CreateModal({ closeModal, reloadShows }) {
     rating: '',
     review: '',
     streamingApp: '',
+    publishMode: '',
   });
-
-  const { title, rating, review, streamingApp } = values;
+  const { title, rating, review, streamingApp, publishMode } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
+    console.log(values);
   };
   const schema = Joi.object({
-    rating: Joi.number(),
+    title: Joi.string().required(),
+    rating: Joi.number().required(),
+    review: Joi.string().required(),
+    streamingApp: Joi.string().required(),
+    publishMode: Joi.string().required(),
   });
 
   const onSubmit = (event) => {
     event.preventDefault();
-
-    const { error } = schema.validate({ rating });
+    console.log(values.title);
+    const { error } = schema.validate({
+      title,
+      review,
+      rating,
+      streamingApp,
+      publishMode,
+    });
     if (error) {
       errorToast(error.message);
     } else {
-      createShow({ user, token, values })
-        .then((data) => {
-          if (data.code === 200) {
-            reloadShows();
-            closeModal(false);
-            toast.success('Yippe! Show Successfully Added.', {
-              position: 'top-center',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          } else if (data.code === 406) {
-            errorToast(data.message);
-          }
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      };
+      dispatch(
+        createShows({
+          url: `/tvshow/create/${user._id}`,
+          headers,
+          data: JSON.stringify(values),
         })
-        .catch((err) => console.log(err));
+      );
+      dispatch({ type: appCreateModalToggle.type });
     }
   };
 
@@ -85,7 +92,7 @@ export default function CreateModal({ closeModal, reloadShows }) {
               className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
               data-modal-toggle="authentication-modal"
               onClick={() => {
-                closeModal(false);
+                dispatch({ type: appCreateModalToggle.type });
               }}
             >
               <svg
@@ -152,6 +159,15 @@ export default function CreateModal({ closeModal, reloadShows }) {
                     required
                   />
                 </div>
+
+                <div>
+                  <select onChange={handleChange('publishMode')}>
+                    <option value="">Publish Mode</option>
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                  </select>
+                </div>
+
                 <button
                   onClick={onSubmit}
                   type="submit"

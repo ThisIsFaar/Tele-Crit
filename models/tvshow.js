@@ -7,6 +7,7 @@ const tvShowSchema = new Schema({
   title: String,
   streamingApp: String,
   rating: Number,
+  publishMode: String,
   review: String,
 });
 

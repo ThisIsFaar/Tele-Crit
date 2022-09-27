@@ -3,55 +3,64 @@ import { isAuthenticated } from '../../helper/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { updateShows } from '../../store/show';
+import { useDispatch, useSelector } from 'react-redux';
+import { appUpdateModalToggle } from '../../store/app';
 const Joi = require('joi');
 
-export default function UpdateModal({ showData: sd, closeModal, reloadShows }) {
+export default function UpdateModal({ closeModal, reloadShows }) {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const sd = useSelector((store) => store.entities.app.updateShow);
   const { user, token } = isAuthenticated();
-
   const [values, setValues] = useState({
-    showId: sd._id,
+    showId: sd.id,
     title: sd.title,
     rating: sd.rating,
     review: sd.review,
     streamingApp: sd.streamingApp,
+    publishMode: sd.publishMode,
   });
 
-  const { title, rating, review, streamingApp } = values;
+  const { title, rating, review, streamingApp, publishMode } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
   const schema = Joi.object({
-    rating: Joi.number(),
+    title: Joi.string().required(),
+    rating: Joi.number().required(),
+    review: Joi.string().required(),
+    streamingApp: Joi.string().required(),
+    publishMode: Joi.string().required(),
   });
 
   const onSubmit = (event) => {
     event.preventDefault();
 
-    const { error } = schema.validate({ rating });
+    const { error } = schema.validate({
+      title,
+      review,
+      rating,
+      streamingApp,
+      publishMode,
+    });
     if (error) {
       errorToast(error.message);
     } else {
-      updateShow({ user, token, values })
-        .then((data) => {
-          if (data.code === 200) {
-            reloadShows();
-            closeModal(false);
-            toast.success('Yippe! Show Successfully Updated.', {
-              position: 'top-center',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          } else if (data.code === 406) {
-            errorToast(data.message);
-          }
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      };
+      dispatch(
+        updateShows({
+          url: `/tvshow/update/${user._id}`,
+          headers,
+          data: JSON.stringify(values),
         })
-        .catch((err) => console.log(err));
+      );
+      dispatch({ type: appUpdateModalToggle.type });
     }
   };
 
@@ -87,7 +96,7 @@ export default function UpdateModal({ showData: sd, closeModal, reloadShows }) {
               className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
               data-modal-toggle="authentication-modal"
               onClick={() => {
-                closeModal(false);
+                dispatch({ type: appUpdateModalToggle.type });
               }}
             >
               <svg
@@ -153,6 +162,13 @@ export default function UpdateModal({ showData: sd, closeModal, reloadShows }) {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                     required
                   />
+                </div>
+                <div>
+                  <select onChange={handleChange('publishMode')}>
+                    <option value="">Publish Mode</option>
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                  </select>
                 </div>
                 <button
                   onClick={onSubmit}

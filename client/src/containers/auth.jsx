@@ -1,10 +1,10 @@
-import { signin, authenticate, isAuthenticated } from '../../helper/authApi';
+import { signin, authenticate, isAuthenticated } from '../helper/authApi';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 const Joi = require('joi');
 
-export default function Signin() {
+export default function Auth() {
   let navigate = useNavigate();
 
   const [values, setValues] = useState({
@@ -14,7 +14,11 @@ export default function Signin() {
     didRedirect: false,
   });
 
-  const { username, password, error, didRedirect } = values;
+  if (isAuthenticated()) {
+    return navigate('/feed');
+  }
+
+  const { username, password } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -48,11 +52,10 @@ export default function Signin() {
     }
   };
 
-  const performRedirect = () => {
-    if (isAuthenticated()) {
-      return navigate('/home');
-    }
-  };
+  // const performRedirect = () => {
+
+  // };
+  // performRedirect();
   const errorToast = (message) => {
     toast.error(`${message}`, {
       position: 'top-center',
@@ -111,7 +114,6 @@ export default function Signin() {
               className="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br  font-medium rounded-lg text-sm py-2.5 text-center w-2/4"
             >
               Sign in
-              {performRedirect()}
             </button>
           </div>
         </form>

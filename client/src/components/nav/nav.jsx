@@ -1,15 +1,16 @@
 import { Link } from 'react-router-dom';
 import { isAuthenticated, Signout } from '../../helper/authApi';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { appCreateModalToggle } from '../../store/app';
 export default function Nav() {
   let navigate = useNavigate();
-
+  const dispatch = useDispatch();
   return (
     <header className="text-gray-600 body-font">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-between">
+      <div className="container mx-auto p-4 flex flex-wrap flex-col md:flex-row items-center justify-between">
         <Link
-          to="/"
+          to="/feed"
           className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
         >
           <svg
@@ -24,29 +25,72 @@ export default function Nav() {
           </svg>
           <span className="ml-1 text-xl">Tele-Crit</span>
         </Link>
-        {isAuthenticated() ? (
-          <button
-            onClick={() => {
-              Signout();
-              navigate('/');
-            }}
-            className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 flex justify-center items-center"
-          >
-            <span className="mr-2">Logout</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="white"
+        {isAuthenticated() && (
+          <div className="flex flex-col items-center  mt-4 bg-gray-50 rounded-lg border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:text-sm  md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <Link
+              to="/feed"
+              className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
             >
-              <path d="M16 9v-4l8 7-8 7v-4h-8v-6h8zm-2 10v-.083c-1.178.685-2.542 1.083-4 1.083-4.411 0-8-3.589-8-8s3.589-8 8-8c1.458 0 2.822.398 4 1.083v-2.245c-1.226-.536-2.577-.838-4-.838-5.522 0-10 4.477-10 10s4.478 10 10 10c1.423 0 2.774-.302 4-.838v-2.162z" />
-            </svg>
-          </button>
-        ) : (
-          <></>
+              <span className="ml-1 text-xl">Feed</span>
+            </Link>
+            <Link
+              to="/owns"
+              className="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+            >
+              <span className="ml-1 text-xl">Owns</span>
+            </Link>
+            {addReviewButton(dispatch)}
+            {logOutButton(navigate)}
+          </div>
         )}
       </div>
     </header>
   );
 }
+
+const logOutButton = (navigate) => {
+  return (
+    <button
+      onClick={() => {
+        Signout();
+        navigate('/');
+      }}
+      className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 flex justify-center items-center"
+    >
+      <span className="mr-2">Logout</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path d="M16 9v-4l8 7-8 7v-4h-8v-6h8zm-2 10v-.083c-1.178.685-2.542 1.083-4 1.083-4.411 0-8-3.589-8-8s3.589-8 8-8c1.458 0 2.822.398 4 1.083v-2.245c-1.226-.536-2.577-.838-4-.838-5.522 0-10 4.477-10 10s4.478 10 10 10c1.423 0 2.774-.302 4-.838v-2.162z" />
+      </svg>
+    </button>
+  );
+};
+
+const addReviewButton = (dispatch) => {
+  return (
+    <button
+      className=" block text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center color-white"
+      type="button"
+      data-modal-toggle="authentication-modal"
+      onClick={() => {
+        dispatch({ type: appCreateModalToggle.type });
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z" />
+      </svg>
+      <span className="ml-2">Add Review</span>
+    </button>
+  );
+};
