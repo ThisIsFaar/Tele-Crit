@@ -1,7 +1,7 @@
 # Tele-Crit
 
-manage a list of the TV shows/Movies watched
-DEMO LINK: https://tele-crit.netlify.app/
+Manage/Share a list of the TV shows/Movies watched
+DEMO LINK: https://tele-crit.herokuapp.com/
 [![S7Ai0P.md.png](https://iili.io/S7Ai0P.md.png)](https://freeimage.host/i/S7Ai0P)
 
 ## Screenshots
@@ -91,17 +91,17 @@ Done, open app in your broswer with url:
 
 ### Features Checklist
 
-- [x] Users can add a new title to the list with the following information
+- [x] Users can add a new show to the list with the following information
   - Title - Name of the show
   - Streaming App : Streaming Platform where the user has watched the show (example - Netflix)
   - Rating : Users should be able to **star rate** the show.
   - Review : Users should be able to add a review of that show
-- [x] Users should be able to add or delete a show from the list.
+  - Publish Mode : Public / Private
+- [x] Users can add or delete a show from the list.
 - [x] Users can update any of the TV series related data ( eg: streaming app, rating, review)
-- [x] APIs should validate a JWT token before allowing access to the caller.
+- [x] APIs are validate with JWT token before allowing access to the caller.
 - [x] Prettier and Linter configuration
-- [x] Dockerise the application
-- [x] Readme file on how to deploy and run the service.
+- [x] React state is managed by Redux-Toolkit 
 
 ## Authors
 
