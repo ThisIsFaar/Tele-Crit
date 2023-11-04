@@ -1,7 +1,7 @@
 # Tele-Crit
 
 Manage/Share a list of the TV shows/Movies watched
-DEMO LINK: https://tele-crit.herokuapp.com/
+DEMO LINK: https://tele-crit.netlify.app/
 [![S7Ai0P.md.png](https://iili.io/S7Ai0P.md.png)](https://freeimage.host/i/S7Ai0P)
 
 ## Screenshots
